@@ -1,35 +1,49 @@
 pipeline {
     agent any
     stages {
-        stage('Parallel Execution') {  // Wrap parallel execution inside a single stage
-            parallel {
-                stage('Build Stage') {
-                    steps {
-                        echo "This is build stage"
-                        sh 'sleep 5'
-                    }
-                }
-                stage('Nested Parallel Stage') {
-                    parallel {
-                        stage('Deploy 1') {
-                            steps {
-                                echo "This is deploy 1"
-                                sh 'sleep 5'
+        stage('Parallel Execution') {  
+            steps {
+                script {
+                    parallel(
+                        "Build Stage": {
+                            stage('Build Stage') {
+                                steps {
+                                    echo "This is build stage"
+                                    sh 'sleep 5'
+                                }
+                            }
+                        },
+                        "Nested Parallel Stage": {
+                            script {
+                                parallel(
+                                    "Deploy 1": {
+                                        stage('Deploy 1') {
+                                            steps {
+                                                echo "This is deploy 1"
+                                                sh 'sleep 5'
+                                            }
+                                        }
+                                    },
+                                    "Deploy 2": {
+                                        stage('Deploy 2') {
+                                            steps {
+                                                echo "This is deploy 2"
+                                                sh 'sleep 5'
+                                            }
+                                        }
+                                    },
+                                    "Deploy 3": {
+                                        stage('Deploy 3') {
+                                            steps {
+                                                echo "This is deploy 3"
+                                                sh 'sleep 5'
+                                            }
+                                        }
+                                    }
+                                )
                             }
                         }
-                        stage('Deploy 2') {
-                            steps {
-                                echo "This is deploy 2"
-                                sh 'sleep 5'
-                            }
-                        }
-                        stage('Deploy 3') {
-                            steps {
-                                echo "This is deploy 3"
-                                sh 'sleep 5'
-                            }
-                        }
-                    }
+                    )
                 }
             }
         }
