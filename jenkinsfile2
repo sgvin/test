@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    stages ('parallel execution') {
+        stage {
+           parallel {
+	       stage ('Stage 1') {
+		   steps {
+			echo "this stage 1"
+			sh 'sleep 5'
+		   }
+	       }
+	       stage ('satge 2') {
+		   steps {
+		       echo "this is stage2"
+		       sh 'sleep 5'
+		   }
+	       }
+	       stage ('stage 3') {
+		   steps {
+		       echo "this is stage 3"
+		       sh 'sleep 5'
+		   }
+	       }
+	   }
+	}
+	stage ('outside parallel') {
+            steps {
+		echo "this outside arallel execution"
+		sh 'sleep 5'
+	    }
+	}
+    }
+}
