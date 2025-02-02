@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Preparation') {
+            steps {
+                echo "Checking out code..."
+                checkout scm
+            }
+        }
+
+        stage('Parallel Execution') {
+            parallel {
+                stage('Build') {
+                    agent any
+                    steps {
+                        echo "Building the application..."
+                        sh 'mvn clean package' // Example for a Maven build
+                    }
+                }
+
+                stage('Test') {
+                    agent any
+                    steps {
+                        echo "Running tests..."
+                        sh 'mvn test' // Example for running unit tests
+                    }
+                }
+
+                stage('Security Scan') {
+                    agent any
+                    steps {
+                        echo "Performing security scan..."
+                        sh 'npm audit' // Example for security scanning in Node.js
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying the application..."
+                sh './deploy.sh' // Example deploy script
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline executed successfully!"
+        }
+        failure {
+            echo "Pipeline failed!"
+        }
+    }
+}

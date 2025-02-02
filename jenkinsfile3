@@ -1,6 +1,7 @@
 pipeline {
     agent any
     stages {
+    stage ('parallel Execution') {
     parallel {
        stage('Build stage') {
           steps {
@@ -28,6 +29,7 @@ pipeline {
 		sh 'sleep 5'
               }
           }
+       }
        }
        }
        }
