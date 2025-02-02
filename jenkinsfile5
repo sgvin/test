@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    stages {
+        stage('Outer Parallel Stage') {
+            parallel {
+                stage('Task 1') {
+                    steps {
+                        echo "Running Task 1"
+                        sh 'sleep 3'
+                    }
+                }
+                stage('Task 2') {
+                    steps {
+                        echo "Running Task 2"
+                        sh 'sleep 3'
+                    }
+                }
+                stage('Nested Parallel') {
+                    parallel {
+                        stage('Subtask 1') {
+                            steps {
+                                echo "Running Subtask 1"
+                                sh 'sleep 2'
+                            }
+                        }
+                        stage('Subtask 2') {
+                            steps {
+                                echo "Running Subtask 2"
+                                sh 'sleep 2'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stage('Final Task') {
+            steps {
+                echo "Running Final Task"
+                sh 'sleep 2'
+            }
+        }
+    }
+}
