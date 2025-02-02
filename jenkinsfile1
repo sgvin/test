@@ -1,0 +1,27 @@
+pipeline {
+    agent none
+    stages {
+       stage('Build stage') {
+       agent {label 'cproject1'}
+          steps {
+             echo "This is build stage"
+             sh 'sleep 5'
+          }
+       }
+       stage('Deploy Stage') {
+       agent {label 'cproject'}
+          steps {
+             echo "This is Deploy stage"
+             sh 'sleep 5'
+          }
+       }
+       stage('Test Stage') {
+       agent any
+           steps {
+               echo "this is test stage"
+               sh 'sleep 5'
+           }
+       }
+   }
+}
+
